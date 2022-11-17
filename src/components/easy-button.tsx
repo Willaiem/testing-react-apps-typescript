@@ -1,8 +1,7 @@
 // http://localhost:3000/easy-button
 // NOTE: this component wont work by itself, so we have the example :)
 
-import * as React from 'react'
-import {useTheme} from './theme'
+import { useTheme } from './theme'
 
 const styles = {
   dark: {
@@ -13,9 +12,9 @@ const styles = {
     color: 'black',
     backgroundColor: 'white',
   },
-}
+} as const
 
-function EasyButton(props) {
+function EasyButton(props: JSX.IntrinsicElements['button']) {
   const [theme] = useTheme()
   return <button style={styles[theme]} {...props} />
 }

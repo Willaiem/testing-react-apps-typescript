@@ -10,10 +10,33 @@ import * as React from 'react'
 import Login from './login'
 import Spinner from './spinner'
 
-function formSubmissionReducer(state, action) {
+type User = { username: string, password: string }
+
+type FormSubmissionState<T> = {
+  status: 'idle' | 'pending' | 'resolved' | 'rejected',
+  responseData: T | null,
+  errorMessage: string | null
+}
+
+type FormSubmissionAction<T> =
+  | {
+    type: 'START'
+  }
+  | {
+    type: 'RESOLVE',
+    responseData: T
+  }
+  | {
+    type: 'REJECT',
+    error: Error
+  }
+
+type FormSubmissionReducer<T> = React.Reducer<FormSubmissionState<T>, FormSubmissionAction<T>>
+
+function formSubmissionReducer<T>(state: FormSubmissionState<T>, action: FormSubmissionAction<T>): FormSubmissionState<T> {
   switch (action.type) {
     case 'START': {
-      return {status: 'pending', responseData: null, errorMessage: null}
+      return { status: 'pending', responseData: null, errorMessage: null }
     }
     case 'RESOLVE': {
       return {
@@ -30,12 +53,18 @@ function formSubmissionReducer(state, action) {
       }
     }
     default:
+      // @ts-ignore
       throw new Error(`Unsupported type: ${action.type}`)
   }
 }
 
-function useFormSubmission({endpoint, data}) {
-  const [state, dispatch] = React.useReducer(formSubmissionReducer, {
+type TUseFormSubmission<T> = {
+  endpoint: string,
+  data: T
+}
+
+function useFormSubmission<T>({ endpoint, data }: TUseFormSubmission<T>) {
+  const [state, dispatch] = React.useReducer<FormSubmissionReducer<T>>(formSubmissionReducer, {
     status: 'idle',
     responseData: null,
     errorMessage: null,
@@ -45,7 +74,7 @@ function useFormSubmission({endpoint, data}) {
 
   React.useEffect(() => {
     if (fetchBody) {
-      dispatch({type: 'START'})
+      dispatch({ type: 'START' })
       window
         .fetch(endpoint, {
           method: 'POST',
@@ -57,9 +86,9 @@ function useFormSubmission({endpoint, data}) {
         .then(async response => {
           const data = await response.json()
           if (response.ok) {
-            dispatch({type: 'RESOLVE', responseData: data})
+            dispatch({ type: 'RESOLVE', responseData: data })
           } else {
-            dispatch({type: 'REJECT', error: data})
+            dispatch({ type: 'REJECT', error: data })
           }
         })
     }
@@ -69,8 +98,8 @@ function useFormSubmission({endpoint, data}) {
 }
 
 function LoginSubmission() {
-  const [formData, setFormData] = React.useState(null)
-  const {status, responseData, errorMessage} = useFormSubmission({
+  const [formData, setFormData] = React.useState<User | null>(null)
+  const { status, responseData, errorMessage } = useFormSubmission({
     endpoint: 'https://auth-provider.example.com/api/login',
     data: formData,
   })
@@ -79,15 +108,15 @@ function LoginSubmission() {
     <>
       {status === 'resolved' ? (
         <div>
-          Welcome <strong>{responseData.username}</strong>
+          Welcome <strong>{responseData?.username}</strong>
         </div>
       ) : (
         <Login onSubmit={data => setFormData(data)} />
       )}
-      <div style={{height: 200}}>
+      <div style={{ height: 200 }}>
         {status === 'pending' ? <Spinner /> : null}
         {status === 'rejected' ? (
-          <div role="alert" style={{color: 'red'}}>
+          <div role="alert" style={{ color: 'red' }}>
             {errorMessage}
           </div>
         ) : null}
