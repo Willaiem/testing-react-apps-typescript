@@ -2,12 +2,15 @@
 // 💯 mock the module
 // http://localhost:3000/location
 
+import { act, render, screen } from '@testing-library/react'
 import * as React from 'react'
-import {render, screen, act} from '@testing-library/react'
-import {useCurrentPosition} from 'react-use-geolocation'
+import ReactUseGeolocation from 'react-use-geolocation'
 import Location from '../../examples/location'
 
-jest.mock('react-use-geolocation')
+jest.mock('react-use-geolocation', (): typeof ReactUseGeolocation => ({
+  useCurrentPosition: jest.fn()
+}))
+const mockedUseCurrentPosition = jest.mocked(ReactUseGeolocation).useCurrentPosition
 
 test('displays the users current location', async () => {
   const fakePosition = {
@@ -17,13 +20,22 @@ test('displays the users current location', async () => {
     },
   }
 
-  let setReturnValue
+  let setReturnValue: React.Dispatch<[{
+    coords: {
+      latitude: number;
+      longitude: number;
+    };
+  }] | []>
+
   function useMockCurrentPosition() {
-    const state = React.useState([])
+    const state = React.useState<[typeof fakePosition] | []>([])
     setReturnValue = state[1]
     return state[0]
   }
-  useCurrentPosition.mockImplementation(useMockCurrentPosition)
+  mockedUseCurrentPosition.mockImplementation(() => {
+    const [position] = useMockCurrentPosition()
+    return [position as GeolocationPosition, undefined]
+  })
 
   render(<Location />)
   expect(screen.getByLabelText(/loading/i)).toBeInTheDocument()
