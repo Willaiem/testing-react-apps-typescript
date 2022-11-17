@@ -143,9 +143,9 @@ a complete authority.
 
 - `src/__tests__/exercise/00.md`: Background, Exercise Instructions, Extra
   Credit
-- `src/__tests__/exercise/00.js`: Exercise with Emoji helpers
-- `src/__tests__/final/00.js`: Final version
-- `src/__tests__/final/00.extra-0.js`: Final version of extra credit
+- `src/__tests__/exercise/00.tsx`: Exercise with Emoji helpers
+- `src/__tests__/final/00.tsx`: Final version
+- `src/__tests__/final/00.extra-0.tsx`: Final version of extra credit
 
 The purpose of the exercise is **not** for you to work through all the material.
 It's intended to get your brain thinking about the right questions to ask me as
@@ -232,7 +232,7 @@ Each exercise has an Elaboration and Feedback link. Please fill that out after
 the exercise and instruction.
 
 At the end of the workshop, please go to this URL to give overall feedback.
-Thank you! https://kcd.im/tra-ws-feedback
+Thank you! <https://kcd.im/tra-ws-feedback>
 
 <!-- prettier-ignore-start -->
 [npm]: https://www.npmjs.com/
@@ -243,11 +243,7 @@ Thank you! https://kcd.im/tra-ws-feedback
 [license-badge]: https://img.shields.io/badge/license-GPL%203.0%20License-blue.svg?style=flat-square
 [license]: https://github.com/kentcdodds/testing-react-apps/blob/main/LICENSE
 [coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
-[gitpod-badge]: https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod
 [coc]: https://github.com/kentcdodds/testing-react-apps/blob/main/CODE_OF_CONDUCT.md
-[emojis]: https://github.com/kentcdodds/all-contributors#emoji-key
-[all-contributors]: https://github.com/kentcdodds/all-contributors
-[all-contributors-badge]: https://img.shields.io/github/all-contributors/kentcdodds/testing-react-apps?color=orange&style=flat-square
 [win-path]: https://www.howtogeek.com/118594/how-to-edit-your-system-path-for-easy-command-line-access/
 [mac-path]: http://stackoverflow.com/a/24322978/971592
 [issue]: https://github.com/kentcdodds/testing-react-apps/issues/new
