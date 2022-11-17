@@ -4,19 +4,23 @@
 import * as React from 'react'
 import {render, screen, act} from '@testing-library/react'
 import Location from '../../examples/location'
+import { Rejector, Resolver } from 'types'
 
 // 🐨 set window.navigator.geolocation to an object that has a getCurrentPosition mock function
 
 // 💰 I'm going to give you this handy utility function
 // it allows you to create a promise that you can resolve/reject on demand.
+
 function deferred() {
-  let resolve, reject
+  let resolve: Resolver | undefined
+  let reject: Rejector | undefined
   const promise = new Promise((res, rej) => {
     resolve = res
     reject = rej
   })
   return {promise, resolve, reject}
 }
+
 // 💰 Here's an example of how you use this:
 // const {promise, resolve, reject} = deferred()
 // promise.then(() => {/* do something */})

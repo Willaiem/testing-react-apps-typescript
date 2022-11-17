@@ -1,15 +1,13 @@
 // mocking HTTP requests
-// http://localhost:3000/login-submission
-
-import * as React from 'react'
 // 🐨 you'll need to grab waitForElementToBeRemoved from '@testing-library/react'
-import {render, screen} from '@testing-library/react'
+import { build, fake } from '@jackfranklin/test-data-bot'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {build, fake} from '@jackfranklin/test-data-bot'
+import { User } from 'types'
 // 🐨 you'll need to import rest from 'msw' and setupServer from msw/node
 import Login from '../../components/login-submission'
 
-const buildLoginForm = build({
+const buildLoginForm = build<User>({
   fields: {
     username: fake(f => f.internet.userName()),
     password: fake(f => f.internet.password()),
@@ -30,7 +28,7 @@ const buildLoginForm = build({
 
 test(`logging in displays the user's username`, async () => {
   render(<Login />)
-  const {username, password} = buildLoginForm()
+  const { username, password } = buildLoginForm()
 
   await userEvent.type(screen.getByLabelText(/username/i), username)
   await userEvent.type(screen.getByLabelText(/password/i), password)

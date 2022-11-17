@@ -1,9 +1,8 @@
 // simple test with React Testing Library
 // http://localhost:3000/counter
 
-import * as React from 'react'
-import {act} from 'react-dom/test-utils'
-import {createRoot} from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
+import { act } from 'react-dom/test-utils'
 // 🐨 import the `render` and `fireEvent` utilities from '@testing-library/react'
 import Counter from '../../components/counter'
 
@@ -11,7 +10,7 @@ import Counter from '../../components/counter'
 // https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#configuring-your-testing-environment
 // Luckily, it's handled for you by React Testing Library :)
 // 💣 so you can now delete this!
-global.IS_REACT_ACT_ENVIRONMENT = true
+(global as any).IS_REACT_ACT_ENVIRONMENT = true
 
 // 💣 remove this. React Testing Library does this automatically!
 beforeEach(() => {
@@ -35,9 +34,9 @@ test('counter increments and decrements when the buttons are clicked', () => {
   // 🐨 instead of `div` here you'll want to use the `container` you get back
   // from React Testing Library
   const [decrement, increment] = div.querySelectorAll('button')
-  const message = div.firstChild.querySelector('div')
+  const message = (div.firstChild as HTMLElement).querySelector('div')
 
-  expect(message.textContent).toBe('Current count: 0')
+  expect(message?.textContent).toBe('Current count: 0')
 
   // 🐨 replace the next two statements with `fireEvent.click(button)`
   // 💰 note that you can remove `act` completely!
@@ -47,12 +46,12 @@ test('counter increments and decrements when the buttons are clicked', () => {
     button: 0,
   })
   act(() => increment.dispatchEvent(incrementClickEvent))
-  expect(message.textContent).toBe('Current count: 1')
+  expect(message?.textContent).toBe('Current count: 1')
   const decrementClickEvent = new MouseEvent('click', {
     bubbles: true,
     cancelable: true,
     button: 0,
   })
   act(() => decrement.dispatchEvent(decrementClickEvent))
-  expect(message.textContent).toBe('Current count: 0')
+  expect(message?.textContent).toBe('Current count: 0')
 })

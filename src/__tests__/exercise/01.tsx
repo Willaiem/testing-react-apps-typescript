@@ -9,7 +9,7 @@ import Counter from '../../components/counter'
 // NOTE: this is a new requirement in React 18
 // https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#configuring-your-testing-environment
 // Luckily, it's handled for you by React Testing Library :)
-global.IS_REACT_ACT_ENVIRONMENT = true
+(global as any).IS_REACT_ACT_ENVIRONMENT = true
 
 test('counter increments and decrements when the buttons are clicked', () => {
   // 🐨 create a div to render your component to (💰 document.createElement)
