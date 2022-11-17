@@ -1,13 +1,15 @@
-import './test/server'
 import './styles.css'
+import './test/server'
 
+import importAll from 'import-all.macro'
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-import {ErrorBoundary} from 'react-error-boundary'
-import importAll from 'import-all.macro'
+import { ErrorBoundary } from 'react-error-boundary'
 
-const allDynamicImports = importAll.deferred('./examples/*.js')
-const lazyComponents = {}
+type ReactLazyComponent = ReturnType<typeof React['lazy']>
+
+const allDynamicImports = importAll.deferred('./examples/*.tsx')
+const lazyComponents: Record<string, ReactLazyComponent> = {}
 
 for (const modulePath in allDynamicImports) {
   if (allDynamicImports.hasOwnProperty(modulePath)) {
